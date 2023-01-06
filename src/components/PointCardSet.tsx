@@ -1,24 +1,23 @@
 import React from "react";
-import PromptCard from "./PromptCard";
+import PointCard from "./PointCard";
 import styled from "styled-components";
 
 const ContainerDiv = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
+    //justify-content: center;
+    //align-items: center;
+    //align-content: center;
 `
 
-interface PromptCardSetProps {
-    prompt : string[]
-
+interface PointCardSetProps {
+    point : number[]
 }
 
-const PromptCardSet: React.FC<PromptCardSetProps> = ({prompt}) => {
-    const MapFn = (current: string) => <PromptCard prompt={current} />
+const PointCardSet: React.FC<PointCardSetProps> = ({point}) => {
+    const MapFn = (current: number) => <PointCard point={current} />
     return <ContainerDiv>
-        {prompt.map(MapFn)}
+        {point.map(MapFn)}
     </ContainerDiv>
 }
 
@@ -30,4 +29,4 @@ const PromptCardSet: React.FC<PromptCardSetProps> = ({prompt}) => {
 // }
 
 
-export default PromptCardSet
+export default PointCardSet
