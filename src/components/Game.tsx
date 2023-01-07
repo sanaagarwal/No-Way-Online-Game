@@ -1,7 +1,7 @@
 import React from "react";
 import PromptCardSet from "./PromptCardSet";
 import PointCardSet from "./PointCardSet";
-import styled, {createGlobalStyle} from "styled-components";
+import styled from "styled-components";
 import {Centering} from "./Centering";
 import {Voting} from "./Voting";
 
