@@ -9,28 +9,11 @@ function App() {
     const [votes, setVotes] = React.useState<number[]>([]);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <Game prompt={[]} onEndTurn={
+        <Game prompt={["Hello", "World"]} onEndTurn={
             (scores: number[]) => {
                 setVotes(scores);
             }
-        } playing={false} isHost={false} revealed={{pointsA: votes, pointsB: [], scoresA: 0, scoresB: 1}}/>
-        <PromptCardSet  prompt={["Hello", "World"]} />
-      </header>
-    </div>
+        } playing={true} isHost={false} revealed={{pointsA: votes, pointsB: [1,2,3], scoresA: 0, scoresB: 1}}/>
   );
 }
 
