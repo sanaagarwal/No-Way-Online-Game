@@ -1,13 +1,24 @@
 import React from "react";
 import PromptCardSet from "./PromptCardSet";
 import PointCardSet from "./PointCardSet";
-import styled from "styled-components";
+import styled, {createGlobalStyle} from "styled-components";
 import {Centering} from "./Centering";
 import {Voting} from "./Voting";
 
 const ThreeColumnDiv = styled.div`
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
+    //grid-template-rows: repeat(5, 1fr);
+    grid-column-gap: 5px;
+    grid-row-gap: 10px;
+    justify-content: center;
+    max-width: 550px;
+  
+`
+
+const TwoColumnDiv = styled.div`
+    display: grid;
+    grid-template-columns: 2fr 1fr;
     //grid-template-rows: repeat(5, 1fr);
     grid-column-gap: 5px;
     grid-row-gap: 10px;
@@ -31,42 +42,35 @@ interface GameProps {
 }
 
 
-
 const Game: React.FC<GameProps> = ({prompt, onEndTurn, playing, revealed, isHost}) => {
 
-    const myExampleFunction = (n: number) => {
-        if(n == 1){
-            console.log("ily sana")
-        }else{
-            console.log("ur cute")
-        }
-    }
-    const myExampleFunction2 = (n: number) => {console.log(n)}
+    // const myExampleFunction = (n: number) => {
+    //     if(n == 1){
+    //         console.log("ily sana")
+    //     }else{
+    //         console.log("ur cute")
+    //     }
+    // }
+    // const myExampleFunction2 = (n: number) => {console.log(n)}
 
 
     return <Centering>
-        {/*<ThreeColumnDiv>*/}
-        {/*    <PromptCardSet prompt={prompt}  />*/}
-        {/*</ThreeColumnDiv>*/}
-        <button onClick={() => {onEndTurn([])}}>Test 2</button>
 
-        <Voting name={"sana"} fn={myExampleFunction}></Voting>
-        <Voting name={"sana"} fn={myExampleFunction2}></Voting>
         {playing && !revealed && <p>Error!</p>}
 
         {playing && revealed ? <div>
                 <ThreeColumnDiv>
-                    <PointCardSet point={revealed.pointsA} />
-                    <PromptCardSet prompt={prompt}  />
                     <PointCardSet point={revealed.pointsB} />
+                    <PromptCardSet prompt={prompt}  />
+                    <PointCardSet point={revealed.pointsA} />
                 </ThreeColumnDiv>
             <div>Team A: {revealed?.scoresA}</div>
+                <div>Team B: {revealed?.scoresB}</div>
         </div>
-        : <div>
+        : <TwoColumnDiv>
                 <PromptCardSet prompt={prompt}  />
-        </div>}
-
-
+                <Voting numberOfPrompts={prompt.length} onSubmit={onEndTurn} />
+        </TwoColumnDiv>}
 
     </Centering>
 }

@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import PromptCard from "../components/PromptCard";
 
 export default {
-    title: 'Example/PromptCard',
+    title: 'Game/PromptCard',
     component: PromptCard,
     parameters: {
         // More on Story layout: https://storybook.js.org/docs/react/configure/story-layout
@@ -14,3 +14,6 @@ export default {
 const Template: ComponentStory<typeof PromptCard> = (args) => <PromptCard {...args} />;
 
 export const Default = Template.bind({});
+Default.args = {
+    prompt: "Writing React code",
+}

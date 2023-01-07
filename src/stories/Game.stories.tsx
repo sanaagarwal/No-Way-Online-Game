@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import Game from "../components/Game";
 
 export default {
-    title: 'Example/Game',
+    title: 'Game/Game',
     component: Game,
     parameters: {
         // More on Story layout: https://storybook.js.org/docs/react/configure/story-layout

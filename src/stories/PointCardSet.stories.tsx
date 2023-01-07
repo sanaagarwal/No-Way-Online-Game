@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import PointCardSet from "../components/PointCardSet";
 
 export default {
-    title: 'Example/PointCardSet',
+    title: 'Game/PointCardSet',
     component: PointCardSet,
     parameters: {
         // More on Story layout: https://storybook.js.org/docs/react/configure/story-layout
@@ -14,4 +14,8 @@ export default {
 const Template: ComponentStory<typeof PointCardSet> = (args) => <PointCardSet {...args} />;
 
 export const Default = Template.bind({});
-Default.args = {point: []}
+Default.args = {point: [
+    3,
+        2,
+        1,
+    ]}
