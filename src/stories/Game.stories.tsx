@@ -14,7 +14,7 @@ export default {
 const Template: ComponentStory<typeof Game> = (args) => <Game {...args} />;
 
 export const Default = Template.bind({});
-Default.args = {prompt: ["playing games", "cooking", "skiing"], revealed: {
+Default.args = {prompt: ["playing games", "skiing", "cooking"], revealed: {
     pointsA: [1, 2, 3],
     pointsB: [2, 1, 3],
     scoresA: 7,

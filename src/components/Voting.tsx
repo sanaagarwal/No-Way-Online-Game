@@ -5,14 +5,15 @@ import InputPoint from "./InputPoint";
 interface VotingProps {
     numberOfPrompts : number;
     onSubmit : (pointAssortment : number[]) => void;
+    isHost : boolean;
 }
 
 const ContainerDiv = styled.div`
   display: flex;
   flex-direction: column;
-  //justify-content: center;
-  //align-items: center;
-  //align-content: center;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
 `
 
 const StyledButton = styled.button`
@@ -30,7 +31,9 @@ const StyledButton = styled.button`
   align-self: center;
   cursor: pointer;
   transition: 0.2s;
+  position: initial;
 
+  
   &:hover {
     background-color: #e8e8e8;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
@@ -50,10 +53,11 @@ const StyledButton = styled.button`
     scale: 0.9;
     transition: 0.2s;
   }
-  
 `
 
-export const Voting: React.FC<VotingProps> = ({numberOfPrompts, onSubmit}) => {
+
+
+export const Voting: React.FC<VotingProps> = ({numberOfPrompts, onSubmit, isHost}) => {
 
     const [pointAssortment, setPointAssortment] = React.useState<number[]>(new Array(numberOfPrompts).fill(0));
     const [buttonClick, setButtonClick] = React.useState<boolean>(false);
@@ -69,19 +73,21 @@ export const Voting: React.FC<VotingProps> = ({numberOfPrompts, onSubmit}) => {
             pointAssortment[index] = point;
             setPointAssortment(Object.assign([], pointAssortment))
         }
-    }/>
+    }
+       isHost={isHost}
+    />
 
-   return<><ContainerDiv>
-       {
-           pointAssortment.map(mapFn)
-       }
+   return<>
+       <ContainerDiv>
+       {pointAssortment.map(mapFn)}
+           <StyledButton
+               style={buttonClick ? {backgroundColor: "#b0ffb0"} : {backgroundColor: "#f5f5f5"}}
+               onClick={() => {onSubmit(pointAssortment); setButtonClick(true)} } disabled={pointAssortment.includes(0) || !pointAssortment.every(
+               (value: number, index) => pointAssortment.indexOf(value) === pointAssortment.lastIndexOf(value)
+           )}> {buttonClick ? "✔️Submitted" : "Submit"} </StyledButton>
+       </ContainerDiv>
 
-   </ContainerDiv>
-       <StyledButton
-           style={buttonClick ? {backgroundColor: "#b0ffb0"} : {backgroundColor: "#f5f5f5"}}
-           onClick={() => {onSubmit(pointAssortment); setButtonClick(true)} } disabled={pointAssortment.includes(0) || !pointAssortment.every(
-           (value: number, index) => pointAssortment.indexOf(value) === pointAssortment.lastIndexOf(value)
-       )}> {buttonClick ? "✔️Submitted" : "Submit"} </StyledButton>
+
        </>
 
 // style point boxes

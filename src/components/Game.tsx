@@ -4,6 +4,7 @@ import PointCardSet from "./PointCardSet";
 import styled from "styled-components";
 import {Centering} from "./Centering";
 import {Voting} from "./Voting";
+import FlippedPointCardSet from "./FlippedPointCards";
 
 const ThreeColumnDiv = styled.div`
     display: grid;
@@ -12,21 +13,10 @@ const ThreeColumnDiv = styled.div`
     grid-column-gap: 5px;
     grid-row-gap: 10px;
     justify-content: center;
-    max-width: 550px;
+    max-width: 600px;
+  align-items: start;
   
 `
-
-const TwoColumnDiv = styled.div`
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    //grid-template-rows: repeat(5, 1fr);
-    grid-column-gap: 5px;
-    grid-row-gap: 10px;
-    justify-content: center;
-    max-width: 550px;
-  
-`
-
 
 interface GameProps {
     prompt : string[]
@@ -60,19 +50,31 @@ const Game: React.FC<GameProps> = ({prompt, onEndTurn, playing, revealed, isHost
 
         {playing && revealed ? <div>
                 <ThreeColumnDiv>
-                    <PointCardSet point={revealed.pointsB} />
-                    <PromptCardSet prompt={prompt}  />
-                    <PointCardSet point={revealed.pointsA} />
+                    <PointCardSet point={revealed.pointsB} isHost={false}/>
+                    <PromptCardSet prompt={prompt}/>
+                    <PointCardSet point={revealed.pointsA} isHost={true}/>
                 </ThreeColumnDiv>
-            <div>Team A: {revealed?.scoresA}</div>
-                <div>Team B: {revealed?.scoresB}</div>
-        </div>
-        : <TwoColumnDiv>
-                <PromptCardSet prompt={prompt}  />
-                <Voting numberOfPrompts={prompt.length} onSubmit={onEndTurn} />
-        </TwoColumnDiv>}
+            </div>
+            : <div>
+                {isHost ?
+                <ThreeColumnDiv>
+                    <FlippedPointCardSet numberOfCards={prompt.length} isHost={true}/>
+                    {/*<Voting numberOfPrompts={prompt.length} onSubmit={onEndTurn} isHost={false}/>*/}
+                    <PromptCardSet prompt={prompt}/>
+                        <Voting numberOfPrompts={prompt.length} onSubmit={onEndTurn} isHost={isHost}/>
+                    </ThreeColumnDiv>
+                     : <ThreeColumnDiv>
+                        <Voting numberOfPrompts={prompt.length} onSubmit={onEndTurn} isHost={isHost}/>
+                        <PromptCardSet prompt={prompt}/>
+                        {/*<Voting numberOfPrompts={prompt.length} onSubmit={onEndTurn} isHost={isHost}/>*/}
+                        <FlippedPointCardSet numberOfCards={prompt.length} isHost={false}/>
+                     </ThreeColumnDiv>
+                }
+            </div>
+            }
 
     </Centering>
 }
+
 
 export default Game
