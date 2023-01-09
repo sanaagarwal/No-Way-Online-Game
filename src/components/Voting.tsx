@@ -1,11 +1,18 @@
 import React from "react";
 import styled from "styled-components";
 import InputPoint from "./InputPoint";
+import { GiPointyHat } from "react-icons/gi";
+
+export const PlayerOfHonorIcon = styled(GiPointyHat)`
+  color: #00deff;
+  font-size: 4em;
+`;
 
 interface VotingProps {
-    numberOfPrompts : number;
-    onSubmit : (pointAssortment : number[]) => void;
-    isHost : boolean;
+  numberOfPrompts: number;
+  onSubmit: (pointAssortment: number[]) => void;
+  isHost: boolean;
+  playerOfHonor: boolean;
 }
 
 const ContainerDiv = styled.div`
@@ -14,7 +21,7 @@ const ContainerDiv = styled.div`
   justify-content: center;
   align-items: center;
   align-content: center;
-`
+`;
 
 const StyledButton = styled.button`
   background-color: #f5f5f5;
@@ -33,7 +40,6 @@ const StyledButton = styled.button`
   transition: 0.2s;
   position: initial;
 
-  
   &:hover {
     background-color: #e8e8e8;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
@@ -53,46 +59,65 @@ const StyledButton = styled.button`
     scale: 0.9;
     transition: 0.2s;
   }
-`
+`;
 
+export const Voting: React.FC<VotingProps> = ({
+  numberOfPrompts,
+  onSubmit,
+  isHost,
+  playerOfHonor,
+}) => {
+  const [pointAssortment, setPointAssortment] = React.useState<number[]>(
+    new Array(numberOfPrompts).fill(0)
+  );
+  const [buttonClick, setButtonClick] = React.useState<boolean>(false);
 
+  // [0,0,0,0,0] => [ [_0_],[_0_],[_2_],[_0_],[_0_] ]
 
-export const Voting: React.FC<VotingProps> = ({numberOfPrompts, onSubmit, isHost}) => {
-
-    const [pointAssortment, setPointAssortment] = React.useState<number[]>(new Array(numberOfPrompts).fill(0));
-    const [buttonClick, setButtonClick] = React.useState<boolean>(false);
-
-    // [0,0,0,0,0] => [ [_0_],[_0_],[_2_],[_0_],[_0_] ]
-
-    const mapFn = (current : number, index: number) => <InputPoint maxValue={numberOfPrompts} point={current} sendPoint={
-        (point: number) => {
-            // input: point (which is the number which the user typed)
-            // pointAssortment: previous points array
-            // current: the point before the user typed in the new one
-            // index: which box they typed it in
-            pointAssortment[index] = point;
-            setPointAssortment(Object.assign([], pointAssortment))
-        }
-    }
-       isHost={isHost}
+  const mapFn = (current: number, index: number) => (
+    <InputPoint
+      maxValue={numberOfPrompts}
+      point={current}
+      sendPoint={(point: number) => {
+        // input: point (which is the number which the user typed)
+        // pointAssortment: previous points array
+        // current: the point before the user typed in the new one
+        // index: which box they typed it in
+        pointAssortment[index] = point;
+        setPointAssortment(Object.assign([], pointAssortment));
+      }}
+      isHost={isHost}
+      playerOfHonor={playerOfHonor}
     />
+  );
 
-   return<>
-       <ContainerDiv>
-       {pointAssortment.map(mapFn)}
-           <StyledButton
-               style={buttonClick ? {backgroundColor: "#b0ffb0"} : {backgroundColor: "#f5f5f5"}}
-               onClick={() => {onSubmit(pointAssortment); setButtonClick(true)} } disabled={pointAssortment.includes(0) || !pointAssortment.every(
-               (value: number, index) => pointAssortment.indexOf(value) === pointAssortment.lastIndexOf(value)
-           )}> {buttonClick ? "✔️Submitted" : "Submit"} </StyledButton>
-       </ContainerDiv>
-
-
-       </>
-
-// style point boxes
-    // provide inputs for numbers useState
-    // https://stackoverflow.com/questions/55757761/handle-an-input-with-react-hooks
-
-    // have a submit button to send the points back to the game
-}
+  return (
+    <>
+      <ContainerDiv>
+        {pointAssortment.map(mapFn)}
+        <StyledButton
+          style={
+            buttonClick
+              ? { backgroundColor: "#b0ffb0" }
+              : { backgroundColor: "#f5f5f5" }
+          }
+          onClick={() => {
+            onSubmit(pointAssortment);
+            setButtonClick(true);
+          }}
+          disabled={
+            pointAssortment.includes(0) ||
+            !pointAssortment.every(
+              (value: number, index) =>
+                pointAssortment.indexOf(value) ===
+                pointAssortment.lastIndexOf(value)
+            )
+          }
+        >
+          {" "}
+          {buttonClick ? "✔️Submitted" : "Submit"}{" "}
+        </StyledButton>
+      </ContainerDiv>
+    </>
+  );
+};

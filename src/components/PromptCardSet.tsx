@@ -3,24 +3,21 @@ import PromptCard from "./PromptCard";
 import styled from "styled-components";
 
 const ContainerDiv = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+`;
 
 interface PromptCardSetProps {
-    prompt : string[]
-
+  prompt: string[];
 }
 
-const PromptCardSet: React.FC<PromptCardSetProps> = ({prompt}) => {
-    const MapFn = (current: string) => <PromptCard prompt={current} />
-    return <ContainerDiv>
-        {prompt.map(MapFn)}
-    </ContainerDiv>
-}
+const PromptCardSet: React.FC<PromptCardSetProps> = ({ prompt }) => {
+  const MapFn = (current: string) => <PromptCard prompt={current} />;
+  return <ContainerDiv>{prompt.map(MapFn)}</ContainerDiv>;
+};
 
 //
 // function PromptEx ({prompt}: PromptCardSetProps) {
@@ -29,5 +26,4 @@ const PromptCardSet: React.FC<PromptCardSetProps> = ({prompt}) => {
 //     </div>
 // }
 
-
-export default PromptCardSet
+export default PromptCardSet;

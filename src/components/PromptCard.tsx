@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {Font} from "./Font";
+import { Font } from "./Font";
 
 const CardDiv = styled(Font)`
   background-color: #f5f5f5;
@@ -15,31 +15,36 @@ const CardDiv = styled(Font)`
   width: 250px;
   align-self: center;
   background-color: #e5e5f7;
-  background-image:  linear-gradient(135deg, #0bcaa3 25%, transparent 25%), linear-gradient(225deg, #0bcaa3 25%, transparent 25%), linear-gradient(45deg, #0bcaa3 25%, transparent 25%), linear-gradient(315deg, #0bcaa3 25%, #e5e5f7 25%);
-  background-position:  10px 0, 10px 0, 0 0, 0 0;
+  background-image: linear-gradient(135deg, #0bcaa3 25%, transparent 25%),
+    linear-gradient(225deg, #0bcaa3 25%, transparent 25%),
+    linear-gradient(45deg, #0bcaa3 25%, transparent 25%),
+    linear-gradient(315deg, #0bcaa3 25%, #e5e5f7 25%);
+  background-position: 10px 0, 10px 0, 0 0, 0 0;
   background-size: 20px 20px;
   background-repeat: repeat;
-`
+`;
 
 const CardText = styled.p`
-    color: #000000;
-    font-size: 1.2em;
-    font-weight: bold;
-    background-color: #ffffff;
-    border-radius: 5px;
-    padding: 0.5em;
-    margin: 0.5em;
-    text-align: center;
-`
+  color: #000000;
+  font-size: 1.2em;
+  font-weight: bold;
+  background-color: #ffffff;
+  border-radius: 5px;
+  padding: 0.5em;
+  margin: 0.5em;
+  text-align: center;
+`;
 
-interface PromptCardProps {prompt : string}
-
-const PromptCard: React.FC<PromptCardProps> = ({prompt}) => {
-    return <CardDiv>
-        <CardText>
-            {prompt}
-        </CardText>
-    </CardDiv>
+interface PromptCardProps {
+  prompt: string;
 }
 
-export default PromptCard
+const PromptCard: React.FC<PromptCardProps> = ({ prompt }) => {
+  return (
+    <CardDiv>
+      <CardText>{prompt}</CardText>
+    </CardDiv>
+  );
+};
+
+export default PromptCard;
