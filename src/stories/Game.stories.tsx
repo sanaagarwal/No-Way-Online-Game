@@ -17,10 +17,10 @@ export const Default = Template.bind({});
 Default.args = {
   prompt: ["playing games", "skiing", "cooking"],
   revealed: {
-    pointsA: [1, 2, 3],
-    pointsB: [2, 1, 3],
-    scoresA: 7,
-    scoresB: 8,
+    pointsOther: [1, 2, 3],
+    pointsHost: [2, 1, 3],
+    scoresOther: 7,
+    scoresHost: 8,
   },
   playing: false,
 };

@@ -20,11 +20,4 @@ const PromptCardSet: React.FC<PromptCardSetProps> = ({ prompt }) => {
   return <ContainerDiv> <EmptyHat />{prompt.map(MapFn)}</ContainerDiv>;
 };
 
-//
-// function PromptEx ({prompt}: PromptCardSetProps) {
-//     return <div>
-//         {prompt.map((current) => <PromptCard prompt={current} />)}
-//     </div>
-// }
-
 export default PromptCardSet;

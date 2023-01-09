@@ -17,6 +17,7 @@ interface VotingProps {
   playerOfHonor: boolean;
   point?: number[];
   isFlipped?: boolean;
+  correctGuesses?: boolean[]
 }
 
 const ContainerDiv = styled.div`
@@ -72,6 +73,7 @@ export const Voting: React.FC<VotingProps> = ({
   playerOfHonor,
   point,
   isFlipped,
+  correctGuesses
 }) => {
   const [pointAssortment, setPointAssortment] = React.useState<number[]>(
     new Array(numberOfPrompts).fill(0)
@@ -87,13 +89,18 @@ export const Voting: React.FC<VotingProps> = ({
 
   // point card
   if (point) {
-    const MapFn = (current: number) => (
-      <PointCard point={current} isHost={isHost} />
-    );
+    // const MapFn = (current: number) => (
+    //   <PointCard point={current} isHost={isHost}/>
+    // );
     return (
       <ContainerDiv>
         <Hat />
-        {point.map(MapFn)}
+        {/*{point.map(MapFn)}*/}
+        {correctGuesses && correctGuesses.map((correctGuess: boolean, index: number) => {
+          return (
+            <PointCard point={point[index]} isHost={isHost} isCorrect={correctGuess} />
+            )
+        })}
       </ContainerDiv>
     );
   }

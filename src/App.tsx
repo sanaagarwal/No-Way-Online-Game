@@ -54,19 +54,45 @@ const useShuffle = (array: any[]) => {
   }, [array]);
   return shuffledArray;
 };
+
 type GameStage = "START_GAME" | "HOST_VOTING" | "PEER_VOTING" | "VIEW_RESULTS";
 
 interface GameState {
   gameStage: GameStage;
   startIdx: number;
   count: number;
-
   votesHost: number[];
-
   votesOther: number[];
-
   playerOfHonor: boolean;
+  scoresHost: number;
+  scoresOther: number;
+  correctGuesses: boolean[];
 }
+
+const scoreCalculation = (playerOfHonorCards: number[], guessCards: number[]): number => {
+  let score = 0;
+
+  for (let i = 0; i < playerOfHonorCards.length; i++) {
+    if (playerOfHonorCards[i] === guessCards[i]) {
+        score += 1;
+    }
+  }
+  return score === 5 ? score += 1 : score;
+}
+
+const glowGuesses = (playerOfHonorCards: number[], guessCards: number[]): boolean[] => {
+  let correctGuesses: boolean[] = [];
+
+  for (let i = 0; i < playerOfHonorCards.length; i++) {
+    if (playerOfHonorCards[i] === guessCards[i]) {
+        correctGuesses.push(true);
+    } else {
+      correctGuesses.push(false);
+    }
+  }
+  return correctGuesses;
+}
+
 
 function App() {
   const [state, setState] = React.useState<GameState>({
@@ -76,6 +102,9 @@ function App() {
     votesHost: new Array(5).fill(0),
     votesOther: new Array(5).fill(0),
     playerOfHonor: true,
+    scoresHost: 0,
+    scoresOther: 0,
+    correctGuesses: [],
   });
 
   const {
@@ -85,6 +114,9 @@ function App() {
     votesHost,
     votesOther,
     playerOfHonor,
+    scoresHost,
+    scoresOther,
+    correctGuesses
   } = state;
 
   const setStartIdx = (startIdx: number) => {
@@ -106,53 +138,47 @@ function App() {
       startIdx: count % 4 === 0 ? startIdx + 5 : startIdx,
     });
   };
-  //
-  // useEffect(() => {
-  //   if (count % 2 === 0) setStartIdx(startIdx + 5);
-  // }, [count]);
-
-  // const changeHonor = () => {
-  //   setPlayerOfHonor(!playerOfHonor);
-  // };
-
-  // === setting up points ===
 
   return (
     <WoodTable>
       {gameState !== "START_GAME" ? (
         <>
+          <div style={{ fontSize: "1.3em", fontWeight: "bold", color: "white", marginTop: "0.5em" }}>
+            "Other Score: " {scoresOther} {" "}
+            "Host Score: " {scoresHost}
+            </div>
           <Game
             prompt={prompts}
             onEndTurn={(points: number[]) => {
-              console.log("0xDEADBEEF");
               if (gameState === "HOST_VOTING") {
-                console.log("Incrementing count from onEndTurn");
                 setState({
                   ...state,
                   votesHost: points,
                   gameStage: "PEER_VOTING",
                   count: count + 1,
                 });
-                console.log("Host count : " + count);
               } else if (gameState === "PEER_VOTING") {
                 setState({
                   ...state,
                   votesOther: points,
                   gameStage: "VIEW_RESULTS",
                   count: count + 1,
+                  scoresOther: scoresOther + (playerOfHonor ? scoreCalculation(votesHost, points) : 0),
+                  scoresHost: scoresHost + (playerOfHonor ? 0 : scoreCalculation(points, votesHost)),
+                  correctGuesses: glowGuesses(votesHost, points)
                 });
-                console.log("Peer count : " + count);
               }
             }}
             playing={gameState === "VIEW_RESULTS"}
             isHost={gameState === "HOST_VOTING"}
             revealed={{
-              pointsA: votesOther,
-              pointsB: votesHost,
-              scoresA: 0,
-              scoresB: 0,
+              pointsOther: votesOther,
+              pointsHost: votesHost,
+              scoresHost: scoresHost,
+              scoresOther: scoresOther,
             }}
             playerOfHonor={playerOfHonor}
+            correctGuesses={correctGuesses}
           />
 
           {gameState === "VIEW_RESULTS" && (
@@ -170,11 +196,6 @@ function App() {
         </GameButton>
       )}
     </WoodTable>
-    // stage 1: A and B vote (one of them is the Player of Honor)
-    // stage 2: A and B reveal, with a button to go to the next round
-    // stage 3: A and B vote again, but this time the Player of Honor is the other person
-    // stage 4: A and B reveal, with a button to go to the next round
-    // stage 5: A and B vote again, but this time the Player of Honor is the other person and there are new prompts
   );
 }
 
