@@ -102,7 +102,7 @@ export const Voting: React.FC<VotingProps> = ({
             <PointCard point={point[index]} isHost={isHost} isCorrect={correctGuess} />
             )
         })}
-        {correctGuesses.every(value => true) && <Confetti/>}
+        {correctGuesses.every(Boolean) && <Confetti/>}
       </ContainerDiv>
     );
   }
@@ -149,7 +149,7 @@ export const Voting: React.FC<VotingProps> = ({
           disabled={
             pointAssortment.includes(0) ||
             !pointAssortment.every(
-              (value: number, index) =>
+              (value: number) =>
                 pointAssortment.indexOf(value) ===
                 pointAssortment.lastIndexOf(value)
             )
