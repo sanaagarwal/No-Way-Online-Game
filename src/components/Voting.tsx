@@ -4,6 +4,8 @@ import InputPoint from "./InputPoint";
 import { GiPointyHat } from "react-icons/gi";
 import PointCard, { TeamA, TeamB } from "./PointCard";
 import {EmptyHat} from "./EmptyHat";
+import Confetti from 'react-confetti'
+
 
 export const PlayerOfHonorIcon = styled(GiPointyHat)`
   color: #ffffff;
@@ -88,19 +90,19 @@ export const Voting: React.FC<VotingProps> = ({
   const Hat = playerOfHonor === isHost ? PlayerOfHonorIcon : EmptyHat;
 
   // point card
-  if (point) {
+  if (point && correctGuesses) {
     // const MapFn = (current: number) => (
     //   <PointCard point={current} isHost={isHost}/>
     // );
     return (
       <ContainerDiv>
         <Hat />
-        {/*{point.map(MapFn)}*/}
-        {correctGuesses && correctGuesses.map((correctGuess: boolean, index: number) => {
+        {correctGuesses.map((correctGuess: boolean, index: number) => {
           return (
             <PointCard point={point[index]} isHost={isHost} isCorrect={correctGuess} />
             )
         })}
+        {correctGuesses.every(value => true) && <Confetti/>}
       </ContainerDiv>
     );
   }

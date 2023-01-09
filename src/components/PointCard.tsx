@@ -76,8 +76,6 @@ interface PointCardProps {
 
 const PointCard: React.FC<PointCardProps> = ({ point, isHost, isCorrect }) => {
 
-  // isCorrect ? glow = "WIN" : glow = "LOSE"
-
   return isHost ? (
     <TeamB isCorrect={isCorrect} >
       <PointText>{point}</PointText>
