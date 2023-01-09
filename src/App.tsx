@@ -147,8 +147,8 @@ function App() {
             playing={gameState === "VIEW_RESULTS"}
             isHost={gameState === "HOST_VOTING"}
             revealed={{
-              pointsA: votesHost,
-              pointsB: votesOther,
+              pointsA: votesOther,
+              pointsB: votesHost,
               scoresA: 0,
               scoresB: 0,
             }}
