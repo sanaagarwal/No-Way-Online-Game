@@ -4,6 +4,8 @@ import Game from "./components/Game";
 import promptList from "./components/PromptList";
 import styled from "styled-components";
 import { GiAngelOutfit } from "react-icons/gi";
+import background from "./images/TABLE_BG.jpeg";
+
 
 const shuffle = (array: any[]) => {
   let currentIndex = array.length,
@@ -18,6 +20,19 @@ const shuffle = (array: any[]) => {
   }
   return array;
 };
+
+const WoodTable = styled.div`
+    border-radius: 5px;
+    background-image: url(${background});
+    background-size: cover;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+  `
 
 const GameButton = styled.button`
   background-color: #100c0b; /* Green */
@@ -39,58 +54,94 @@ const useShuffle = (array: any[]) => {
   }, [array]);
   return shuffledArray;
 };
+type GameStage = "START_GAME" | "HOST_VOTING" | "PEER_VOTING" | "VIEW_RESULTS";
+
+interface GameState {
+  gameStage: GameStage;
+  startIdx: number;
+  count: number;
+
+  votesHost: number[];
+
+  votesOther: number[];
+
+  playerOfHonor: boolean;
+}
 
 function App() {
-  type GameStage =
-    | "START_GAME"
-    | "HOST_VOTING"
-    | "PEER_VOTING"
-    | "VIEW_RESULTS";
+  const [state, setState] = React.useState<GameState>({
+    gameStage: "START_GAME",
+    startIdx: 0,
+    count: 0,
+    votesHost: new Array(5).fill(0),
+    votesOther: new Array(5).fill(0),
+    playerOfHonor: true,
+  });
 
-  // === game state ===
-  const [gameState, setGameState] = React.useState<GameStage>("START_GAME");
+  const {
+    count,
+    startIdx,
+    gameStage: gameState,
+    votesHost,
+    votesOther,
+    playerOfHonor,
+  } = state;
+
+  const setStartIdx = (startIdx: number) => {
+    setState({ ...state, startIdx });
+  };
 
   // === setting up prompts ===
-  const [startIdx, setStartIdx] = React.useState(0);
   const ourPlist = useShuffle(promptList);
   const prompts = ourPlist.slice(startIdx, startIdx + 5);
   if (startIdx + 5 > ourPlist.length) {
     setStartIdx(0);
   }
-  const startGame = () => {
-    setStartIdx(startIdx + 5);
-    setGameState("HOST_VOTING");
-  };
 
-  const changeHonor = () => {
-    setPlayerOfHonor(!playerOfHonor);
+  const nextRound = () => {
+    setState({
+      ...state,
+      gameStage: "HOST_VOTING",
+      playerOfHonor: !playerOfHonor,
+      startIdx: count % 4 === 0 ? startIdx + 5 : startIdx,
+    });
   };
+  //
+  // useEffect(() => {
+  //   if (count % 2 === 0) setStartIdx(startIdx + 5);
+  // }, [count]);
+
+  // const changeHonor = () => {
+  //   setPlayerOfHonor(!playerOfHonor);
+  // };
 
   // === setting up points ===
-  const [votesHost, setVotesHost] = React.useState<number[]>(
-    new Array(prompts.length).fill(0)
-  );
-  const [votesOther, setVotesOther] = React.useState<number[]>(
-    new Array(prompts.length).fill(0)
-  );
-
-  const [playerOfHonor, setPlayerOfHonor] = React.useState<boolean>(true);
 
   return (
-    <>
+    <WoodTable>
       {gameState !== "START_GAME" ? (
         <>
           <Game
             prompt={prompts}
             onEndTurn={(points: number[]) => {
+              console.log("0xDEADBEEF");
               if (gameState === "HOST_VOTING") {
-                // runs when PoH clicks submit (host)
-                setVotesHost(points);
-                setGameState("PEER_VOTING");
+                console.log("Incrementing count from onEndTurn");
+                setState({
+                  ...state,
+                  votesHost: points,
+                  gameStage: "PEER_VOTING",
+                  count: count + 1,
+                });
+                console.log("Host count : " + count);
               } else if (gameState === "PEER_VOTING") {
-                // runs when PoH clicks submit (not host)
-                setVotesOther(points);
-                setGameState("VIEW_RESULTS");
+                setState({
+                  ...state,
+                  votesOther: points,
+                  gameStage: "VIEW_RESULTS",
+                  count: count + 1,
+                });
+                console.log("Peer count : " + count);
               }
             }}
             playing={gameState === "VIEW_RESULTS"}
@@ -105,22 +156,20 @@ function App() {
           />
 
           {gameState === "VIEW_RESULTS" && (
-            <button onClick={startGame}> Next Round </button>
-          )}
-          {gameState === "VIEW_RESULTS" && (
-            <button onClick={changeHonor}> Change Player of Honor </button>
+            <button onClick={nextRound}> Next Round </button>
           )}
         </>
       ) : (
         <GameButton
           onClick={() => {
-            setGameState("HOST_VOTING");
+            setState({ ...state, gameStage: "HOST_VOTING" });
           }}
         >
-          Start Game <GiAngelOutfit />
+          Start Game
+          <GiAngelOutfit />
         </GameButton>
       )}
-    </>
+    </WoodTable>
     // stage 1: A and B vote (one of them is the Player of Honor)
     // stage 2: A and B reveal, with a button to go to the next round
     // stage 3: A and B vote again, but this time the Player of Honor is the other person

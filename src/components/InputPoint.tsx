@@ -23,6 +23,8 @@ const Container2 = styled(TeamB)`
 `;
 
 const PointText = styled.input`
+  @import url("https://fonts.googleapis.com/css2?family=Neucha&display=swap");
+  font-family: "Neucha", cursive;
   color: #000000;
   font-size: 1.2em;
   font-weight: bold;
@@ -31,6 +33,7 @@ const PointText = styled.input`
   padding: 0.5em;
   margin: 0.5em;
   text-align: center;
+  width: calc(100% - 2em);
 `;
 
 interface InputCardProps {
@@ -48,7 +51,7 @@ const InputCard: React.FC<InputCardProps> = ({
   isHost,
   playerOfHonor,
 }) => {
-  const C = isHost ?  Container2 : Container;
+  const C = isHost ? Container2 : Container;
   return (
     <C>
       <PointText

@@ -3,9 +3,10 @@ import styled from "styled-components";
 import InputPoint from "./InputPoint";
 import { GiPointyHat } from "react-icons/gi";
 import PointCard, { TeamA, TeamB } from "./PointCard";
+import {EmptyHat} from "./EmptyHat";
 
 export const PlayerOfHonorIcon = styled(GiPointyHat)`
-  color: #00deff;
+  color: #ffffff;
   font-size: 4em;
 `;
 
@@ -64,10 +65,6 @@ const StyledButton = styled.button`
   }
 `;
 
-const Empty = () => {
-  return <> </>;
-};
-
 export const Voting: React.FC<VotingProps> = ({
   numberOfPrompts,
   onSubmit,
@@ -86,7 +83,7 @@ export const Voting: React.FC<VotingProps> = ({
     setButtonClick(false);
   }, [numberOfPrompts, point, isFlipped]);
 
-  const Hat = playerOfHonor === isHost ? PlayerOfHonorIcon : Empty;
+  const Hat = playerOfHonor === isHost ? PlayerOfHonorIcon : EmptyHat;
 
   // point card
   if (point) {
@@ -123,10 +120,6 @@ export const Voting: React.FC<VotingProps> = ({
             maxValue={numberOfPrompts}
             point={current}
             sendPoint={(point: number) => {
-              // input: point (which is the number which the user typed)
-              // pointAssortment: previous points array
-              // current: the point before the user typed in the new one
-              // index: which box they typed it in
               pointAssortment[index] = point;
               setPointAssortment(Object.assign([], pointAssortment));
             }}

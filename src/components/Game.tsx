@@ -58,16 +58,16 @@ const Game: React.FC<GameProps> = ({
           isHost={true}
           playerOfHonor={playerOfHonor}
           isFlipped={!playing && !isHost}
-          point={!playing ? undefined : revealed?.pointsA}
+          point={!playing ? undefined : revealed?.pointsB}
         />
         <PromptCardSet prompt={prompt} />
         <Voting
-            numberOfPrompts={prompt.length}
-            onSubmit={onEndTurn}
-            isHost={false}
-            playerOfHonor={playerOfHonor}
-            isFlipped={!playing && isHost}
-            point={!playing ? undefined: revealed?.pointsB}
+          numberOfPrompts={prompt.length}
+          onSubmit={onEndTurn}
+          isHost={false}
+          playerOfHonor={playerOfHonor}
+          isFlipped={!playing && isHost}
+          point={!playing ? undefined : revealed?.pointsA}
         />
       </ThreeColumnDiv>
 

@@ -14,6 +14,10 @@ export const TeamA = styled(Font)`
   text-align: center;
   width: 100px;
   align-self: center;
+  display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   background-color: #e5e5f7;
   background-image: repeating-radial-gradient(
       circle at 0 0,
@@ -39,9 +43,11 @@ const PointText = styled.p`
   font-weight: bold;
   background-color: #ffffff;
   border-radius: 5px;
+  text-align: center;
   padding: 0.5em;
   margin: 0.5em;
-  text-align: center;
+  width: calc(100% - 2em);
+
 `;
 
 interface PointCardProps {
@@ -52,13 +58,11 @@ interface PointCardProps {
 const PointCard: React.FC<PointCardProps> = ({ point, isHost }) => {
   return isHost ? (
     <TeamB>
-      {" "}
-      <PointText>{point}</PointText>{" "}
+      <PointText>{point}</PointText>
     </TeamB>
   ) : (
     <TeamA>
-      {" "}
-      <PointText>{point}</PointText>{" "}
+      <PointText>{point}</PointText>
     </TeamA>
   );
 };
