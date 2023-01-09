@@ -1,5 +1,6 @@
 {
   "name": "oh-really",
+  "homepage": "https://sanaagarwal.github.io/Oh-Really-Online-Game/",
   "version": "0.1.0",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
