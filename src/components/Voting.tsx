@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import InputPoint from "./InputPoint";
 import { GiPointyHat } from "react-icons/gi";
+import PointCard, { TeamA, TeamB } from "./PointCard";
 
 export const PlayerOfHonorIcon = styled(GiPointyHat)`
   color: #00deff;
@@ -13,6 +14,8 @@ interface VotingProps {
   onSubmit: (pointAssortment: number[]) => void;
   isHost: boolean;
   playerOfHonor: boolean;
+  point?: number[];
+  isFlipped?: boolean;
 }
 
 const ContainerDiv = styled.div`
@@ -61,40 +64,76 @@ const StyledButton = styled.button`
   }
 `;
 
+const Empty = () => {
+  return <> </>;
+};
+
 export const Voting: React.FC<VotingProps> = ({
   numberOfPrompts,
   onSubmit,
   isHost,
   playerOfHonor,
+  point,
+  isFlipped,
 }) => {
   const [pointAssortment, setPointAssortment] = React.useState<number[]>(
     new Array(numberOfPrompts).fill(0)
   );
   const [buttonClick, setButtonClick] = React.useState<boolean>(false);
 
-  // [0,0,0,0,0] => [ [_0_],[_0_],[_2_],[_0_],[_0_] ]
+  useEffect(() => {
+    setPointAssortment(new Array(numberOfPrompts).fill(0));
+    setButtonClick(false);
+  }, [numberOfPrompts, point, isFlipped]);
 
-  const mapFn = (current: number, index: number) => (
-    <InputPoint
-      maxValue={numberOfPrompts}
-      point={current}
-      sendPoint={(point: number) => {
-        // input: point (which is the number which the user typed)
-        // pointAssortment: previous points array
-        // current: the point before the user typed in the new one
-        // index: which box they typed it in
-        pointAssortment[index] = point;
-        setPointAssortment(Object.assign([], pointAssortment));
-      }}
-      isHost={isHost}
-      playerOfHonor={playerOfHonor}
-    />
-  );
+  const Hat = playerOfHonor === isHost ? PlayerOfHonorIcon : Empty;
 
+  // point card
+  if (point) {
+    const MapFn = (current: number) => (
+      <PointCard point={current} isHost={isHost} />
+    );
+    return (
+      <ContainerDiv>
+        <Hat />
+        {point.map(MapFn)}
+      </ContainerDiv>
+    );
+  }
+
+  if (isFlipped) {
+    const MapFn = () => {
+      return isHost ? <TeamB /> : <TeamA />;
+    };
+    return (
+      <ContainerDiv>
+        <Hat />
+        {Array(numberOfPrompts).fill(0).map(MapFn)}
+      </ContainerDiv>
+    );
+  }
+
+  // input point card
   return (
     <>
       <ContainerDiv>
-        {pointAssortment.map(mapFn)}
+        <Hat />
+        {pointAssortment.map((current: number, index: number) => (
+          <InputPoint
+            maxValue={numberOfPrompts}
+            point={current}
+            sendPoint={(point: number) => {
+              // input: point (which is the number which the user typed)
+              // pointAssortment: previous points array
+              // current: the point before the user typed in the new one
+              // index: which box they typed it in
+              pointAssortment[index] = point;
+              setPointAssortment(Object.assign([], pointAssortment));
+            }}
+            isHost={isHost}
+            playerOfHonor={playerOfHonor}
+          />
+        ))}
         <StyledButton
           style={
             buttonClick
@@ -114,8 +153,7 @@ export const Voting: React.FC<VotingProps> = ({
             )
           }
         >
-          {" "}
-          {buttonClick ? "✔️Submitted" : "Submit"}{" "}
+          {buttonClick ? "✔️Submitted" : "Submit"}
         </StyledButton>
       </ContainerDiv>
     </>

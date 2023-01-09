@@ -63,7 +63,7 @@ function App() {
   };
 
   const changeHonor = () => {
-    setPlayerOfHonor(false);
+    setPlayerOfHonor(!playerOfHonor);
   };
 
   // === setting up points ===
@@ -117,8 +117,7 @@ function App() {
             setGameState("HOST_VOTING");
           }}
         >
-          {" "}
-          Start Game <GiAngelOutfit />{" "}
+          Start Game <GiAngelOutfit />
         </GameButton>
       )}
     </>

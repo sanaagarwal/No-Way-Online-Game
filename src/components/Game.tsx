@@ -1,10 +1,8 @@
 import React from "react";
 import PromptCardSet from "./PromptCardSet";
-import PointCardSet from "./PointCardSet";
 import styled from "styled-components";
 import { Centering } from "./Centering";
-import { PlayerOfHonorIcon, Voting } from "./Voting";
-import FlippedPointCardSet from "./FlippedPointCards";
+import { Voting } from "./Voting";
 
 const ThreeColumnDiv = styled.div`
   display: grid;
@@ -53,47 +51,61 @@ const Game: React.FC<GameProps> = ({
     <Centering>
       {playing && !revealed && <p>Error!</p>}
 
-      {playing && revealed ? (
-        <div>
-          <ThreeColumnDiv>
-            <PointCardSet point={revealed.pointsB} isHost={false} />
-            <PromptCardSet prompt={prompt} />
-            <PointCardSet point={revealed.pointsA} isHost={true} />
-          </ThreeColumnDiv>
-        </div>
-      ) : (
-        <div>
-          {isHost ? (
-            <ThreeColumnDiv>
-              <FlippedPointCardSet
-                numberOfCards={prompt.length}
-                isHost={true}
-              />
-              <PromptCardSet prompt={prompt} />
-              <Voting
-                numberOfPrompts={prompt.length}
-                onSubmit={onEndTurn}
-                isHost={isHost}
-                playerOfHonor={playerOfHonor}
-              />
-            </ThreeColumnDiv>
-          ) : (
-            <ThreeColumnDiv>
-              <Voting
-                numberOfPrompts={prompt.length}
-                onSubmit={onEndTurn}
-                isHost={isHost}
-                playerOfHonor={playerOfHonor}
-              />
-              <PromptCardSet prompt={prompt} />
-              <FlippedPointCardSet
-                numberOfCards={prompt.length}
-                isHost={false}
-              />
-            </ThreeColumnDiv>
-          )}
-        </div>
-      )}
+      <ThreeColumnDiv>
+        <Voting
+          numberOfPrompts={prompt.length}
+          onSubmit={onEndTurn}
+          isHost={true}
+          playerOfHonor={playerOfHonor}
+          isFlipped={!playing && !isHost}
+          point={!playing ? undefined : revealed?.pointsA}
+        />
+        <PromptCardSet prompt={prompt} />
+        <Voting
+            numberOfPrompts={prompt.length}
+            onSubmit={onEndTurn}
+            isHost={false}
+            playerOfHonor={playerOfHonor}
+            isFlipped={!playing && isHost}
+            point={!playing ? undefined: revealed?.pointsB}
+        />
+      </ThreeColumnDiv>
+
+      {/*{playing && revealed ? (*/}
+      {/*  <div>*/}
+      {/*    <ThreeColumnDiv>*/}
+      {/*      <Voting numberOfPrompts={revealed.pointsB.length} onSubmit={() => {}} point={revealed.pointsB} isHost={false} playerOfHonor={playerOfHonor} />*/}
+      {/*      <PromptCardSet prompt={prompt} />*/}
+      {/*      <Voting  numberOfPrompts={revealed.pointsA.length} onSubmit={() => {}} point={revealed.pointsA} isHost={true} playerOfHonor={playerOfHonor} />*/}
+      {/*    </ThreeColumnDiv>*/}
+      {/*  </div>*/}
+      {/*) : (*/}
+      {/*  <div>*/}
+      {/*    {isHost ? (*/}
+      {/*      <ThreeColumnDiv>*/}
+      {/*        <Voting  numberOfPrompts={prompt.length} onSubmit={() => {}} point={[]} isHost={!isHost} playerOfHonor={playerOfHonor} isFlipped />*/}
+      {/*        <PromptCardSet prompt={prompt} />*/}
+      {/*        <Voting*/}
+      {/*          numberOfPrompts={prompt.length}*/}
+      {/*          onSubmit={onEndTurn}*/}
+      {/*          isHost={isHost}*/}
+      {/*          playerOfHonor={playerOfHonor}*/}
+      {/*        />*/}
+      {/*      </ThreeColumnDiv>*/}
+      {/*    ) : (*/}
+      {/*      <ThreeColumnDiv>*/}
+      {/*        <Voting*/}
+      {/*          numberOfPrompts={prompt.length}*/}
+      {/*          onSubmit={onEndTurn}*/}
+      {/*          isHost={isHost}*/}
+      {/*          playerOfHonor={playerOfHonor}*/}
+      {/*        />*/}
+      {/*        <PromptCardSet prompt={prompt} />*/}
+      {/*        <Voting  numberOfPrompts={prompt.length} onSubmit={() => {}} point={[]} isHost={!isHost} playerOfHonor={playerOfHonor} isFlipped />*/}
+      {/*      </ThreeColumnDiv>*/}
+      {/*    )}*/}
+      {/*  </div>*/}
+      {/*)}*/}
     </Centering>
   );
 };

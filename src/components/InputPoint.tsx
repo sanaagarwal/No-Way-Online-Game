@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { TeamA, TeamB } from "./PointCard";
-import { GiPointyHat } from "react-icons/gi";
 
 const Container = styled(TeamA)`
   &::placeholder {
@@ -42,10 +41,6 @@ interface InputCardProps {
   playerOfHonor: boolean;
 }
 
-const Empty = () => {
-  return <> </>;
-};
-
 const InputCard: React.FC<InputCardProps> = ({
   point,
   sendPoint,
@@ -53,11 +48,9 @@ const InputCard: React.FC<InputCardProps> = ({
   isHost,
   playerOfHonor,
 }) => {
-  const C = isHost ? Container : Container2;
-  const POH = playerOfHonor === isHost ? GiPointyHat : Empty;
+  const C = isHost ?  Container2 : Container;
   return (
     <C>
-      <POH />
       <PointText
         type="number"
         min="1"

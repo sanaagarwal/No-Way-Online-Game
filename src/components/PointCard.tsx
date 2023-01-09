@@ -51,15 +51,15 @@ interface PointCardProps {
 
 const PointCard: React.FC<PointCardProps> = ({ point, isHost }) => {
   return isHost ? (
-    <TeamA>
-      {" "}
-      <PointText>{point}</PointText>{" "}
-    </TeamA>
-  ) : (
     <TeamB>
       {" "}
       <PointText>{point}</PointText>{" "}
     </TeamB>
+  ) : (
+    <TeamA>
+      {" "}
+      <PointText>{point}</PointText>{" "}
+    </TeamA>
   );
 };
 
