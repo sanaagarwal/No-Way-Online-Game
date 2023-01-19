@@ -3,9 +3,8 @@ import styled from "styled-components";
 import InputPoint from "./InputPoint";
 import { GiPointyHat } from "react-icons/gi";
 import PointCard, { TeamA, TeamB } from "./PointCard";
-import {EmptyHat} from "./EmptyHat";
-import Confetti from 'react-confetti'
-
+import { EmptyHat } from "./EmptyHat";
+import Confetti from "react-confetti";
 
 export const PlayerOfHonorIcon = styled(GiPointyHat)`
   color: #ffffff;
@@ -19,7 +18,7 @@ interface VotingProps {
   playerOfHonor: boolean;
   point?: number[];
   isFlipped?: boolean;
-  correctGuesses?: boolean[]
+  correctGuesses?: boolean[];
 }
 
 const ContainerDiv = styled.div`
@@ -75,7 +74,7 @@ export const Voting: React.FC<VotingProps> = ({
   playerOfHonor,
   point,
   isFlipped,
-  correctGuesses
+  correctGuesses,
 }) => {
   const [pointAssortment, setPointAssortment] = React.useState<number[]>(
     new Array(numberOfPrompts).fill(0)
@@ -99,10 +98,14 @@ export const Voting: React.FC<VotingProps> = ({
         <Hat />
         {correctGuesses.map((correctGuess: boolean, index: number) => {
           return (
-            <PointCard point={point[index]} isHost={isHost} isCorrect={correctGuess} />
-            )
+            <PointCard
+              point={point[index]}
+              isHost={isHost}
+              isCorrect={correctGuess}
+            />
+          );
         })}
-        {correctGuesses.every(Boolean) && <Confetti/>}
+        {correctGuesses.every(Boolean) && <Confetti />}
       </ContainerDiv>
     );
   }

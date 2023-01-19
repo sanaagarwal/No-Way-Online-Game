@@ -3,12 +3,13 @@ import PromptCardSet from "./PromptCardSet";
 import styled from "styled-components";
 import { Centering } from "./Centering";
 import { Voting } from "./Voting";
+import ScoreCard from "./ScoreCard";
 
 const ThreeColumnDiv = styled.div`
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
   grid-column-gap: 5px;
-  grid-row-gap: 10px;
+  grid-row-gap: 1px;
   justify-content: center;
   max-width: 600px;
   align-items: start;
@@ -38,11 +39,9 @@ const Game: React.FC<GameProps> = ({
   playerOfHonor,
   correctGuesses,
 }) => {
-
   return (
     <Centering>
       {playing && !revealed && <p>Error!</p>}
-
       <ThreeColumnDiv>
         <Voting
           numberOfPrompts={prompt.length}
@@ -63,6 +62,8 @@ const Game: React.FC<GameProps> = ({
           point={!playing ? undefined : revealed?.pointsOther}
           correctGuesses={correctGuesses}
         />
+        <ScoreCard score={!revealed ? 0 : revealed.scoresHost} side={false} />
+        <ScoreCard score={!revealed ? 0 : revealed.scoresOther} side={true} />
       </ThreeColumnDiv>
     </Centering>
   );

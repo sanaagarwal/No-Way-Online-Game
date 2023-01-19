@@ -5,7 +5,7 @@ import promptList from "./components/PromptList";
 import styled from "styled-components";
 import { GiAngelOutfit } from "react-icons/gi";
 import background from "./images/TABLE_BG.jpeg";
-
+import GameInfo from "./components/GameInfo";
 
 const shuffle = (array: any[]) => {
   let currentIndex = array.length,
@@ -22,17 +22,17 @@ const shuffle = (array: any[]) => {
 };
 
 const WoodTable = styled.div`
-    border-radius: 5px;
-    background-image: url(${background});
-    background-size: cover;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-  `
+  border-radius: 5px;
+  background-image: url(${background});
+  background-size: cover;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+`;
 
 const GameButton = styled.button`
   background-color: #100c0b; /* Green */
@@ -69,30 +69,35 @@ interface GameState {
   correctGuesses: boolean[];
 }
 
-const scoreCalculation = (playerOfHonorCards: number[], guessCards: number[]): number => {
+const scoreCalculation = (
+  playerOfHonorCards: number[],
+  guessCards: number[]
+): number => {
   let score = 0;
 
   for (let i = 0; i < playerOfHonorCards.length; i++) {
     if (playerOfHonorCards[i] === guessCards[i]) {
-        score += 1;
+      score += 1;
     }
   }
-  return score === 5 ? score += 1 : score;
-}
+  return score === 5 ? (score += 1) : score;
+};
 
-const glowGuesses = (playerOfHonorCards: number[], guessCards: number[]): boolean[] => {
+const glowGuesses = (
+  playerOfHonorCards: number[],
+  guessCards: number[]
+): boolean[] => {
   let correctGuesses: boolean[] = [];
 
   for (let i = 0; i < playerOfHonorCards.length; i++) {
     if (playerOfHonorCards[i] === guessCards[i]) {
-        correctGuesses.push(true);
+      correctGuesses.push(true);
     } else {
       correctGuesses.push(false);
     }
   }
   return correctGuesses;
-}
-
+};
 
 function App() {
   const [state, setState] = React.useState<GameState>({
@@ -116,7 +121,7 @@ function App() {
     playerOfHonor,
     scoresHost,
     scoresOther,
-    correctGuesses
+    correctGuesses,
   } = state;
 
   const setStartIdx = (startIdx: number) => {
@@ -139,14 +144,12 @@ function App() {
     });
   };
 
+  const [infoDisplay, setInfoDisplay] = React.useState(false);
+
   return (
     <WoodTable>
       {gameState !== "START_GAME" ? (
         <>
-          <div style={{ fontSize: "1.3em", fontWeight: "bold", color: "white", marginTop: "0.5em" }}>
-            "Other Score: " {scoresOther} {" "}
-            "Host Score: " {scoresHost}
-            </div>
           <Game
             prompt={prompts}
             onEndTurn={(points: number[]) => {
@@ -163,9 +166,13 @@ function App() {
                   votesOther: points,
                   gameStage: "VIEW_RESULTS",
                   count: count + 1,
-                  scoresOther: scoresOther + (playerOfHonor ? scoreCalculation(votesHost, points) : 0),
-                  scoresHost: scoresHost + (playerOfHonor ? 0 : scoreCalculation(points, votesHost)),
-                  correctGuesses: glowGuesses(votesHost, points)
+                  scoresOther:
+                    scoresOther +
+                    (playerOfHonor ? scoreCalculation(votesHost, points) : 0),
+                  scoresHost:
+                    scoresHost +
+                    (playerOfHonor ? 0 : scoreCalculation(points, votesHost)),
+                  correctGuesses: glowGuesses(votesHost, points),
                 });
               }
             }}
@@ -186,14 +193,26 @@ function App() {
           )}
         </>
       ) : (
-        <GameButton
-          onClick={() => {
-            setState({ ...state, gameStage: "HOST_VOTING" });
-          }}
-        >
-          Start Game
-          <GiAngelOutfit />
-        </GameButton>
+        <>
+          <GameButton
+            onClick={() => {
+              setState({ ...state, gameStage: "HOST_VOTING" });
+            }}
+          >
+            Start Game
+            <GiAngelOutfit />
+          </GameButton>
+          <GameButton
+            onClick={() => {
+              setInfoDisplay(true);
+            }}
+          >
+            Rules
+          </GameButton>
+          {infoDisplay ? (
+            <GameInfo onClose={() => setInfoDisplay(false)} />
+          ) : null}
+        </>
       )}
     </WoodTable>
   );

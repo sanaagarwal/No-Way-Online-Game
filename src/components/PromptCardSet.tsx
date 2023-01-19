@@ -1,7 +1,7 @@
 import React from "react";
 import PromptCard from "./PromptCard";
 import styled from "styled-components";
-import {EmptyHat} from "./EmptyHat";
+import { EmptyHat } from "./EmptyHat";
 
 const ContainerDiv = styled.div`
   display: flex;
@@ -17,7 +17,13 @@ interface PromptCardSetProps {
 
 const PromptCardSet: React.FC<PromptCardSetProps> = ({ prompt }) => {
   const MapFn = (current: string) => <PromptCard prompt={current} />;
-  return <ContainerDiv> <EmptyHat />{prompt.map(MapFn)}</ContainerDiv>;
+  return (
+    <ContainerDiv>
+      {" "}
+      <EmptyHat />
+      {prompt.map(MapFn)}
+    </ContainerDiv>
+  );
 };
 
 export default PromptCardSet;

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Font } from "./Font";
 
 interface PointCardStyleProps {
-    isCorrect?: boolean;
+  isCorrect?: boolean;
 }
 
 export const TeamA = styled(Font)<PointCardStyleProps>`
@@ -19,29 +19,27 @@ export const TeamA = styled(Font)<PointCardStyleProps>`
   width: 100px;
   align-self: center;
   display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: #e5e5f7;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #e5e5f7;
   background-image: repeating-radial-gradient(
       circle at 0 0,
       transparent 0,
       #e5e5f7 10px
     ),
-  repeating-linear-gradient(#444cf755, #444cf7);
-  box-shadow: ${props => {
-      switch (props.isCorrect) {
-        case true:
-            return "0 0 20px #4f4"; // green color : #44f
-        case false:
-            return "0 0 20px #f44"; // red
-        default:
-            return "none";
-        }
+    repeating-linear-gradient(#444cf755, #444cf7);
+  box-shadow: ${(props) => {
+    switch (props.isCorrect) {
+      case true:
+        return "0 0 20px #4f4"; // green color : #44f
+      case false:
+        return "0 0 20px #f44"; // red
+      default:
+        return "none";
     }
-  };
-`
-
+  }};
+`;
 
 export const TeamB = styled(TeamA)`
   background-color: #e5e5f7;
@@ -63,21 +61,17 @@ const PointText = styled.p`
   padding: 0.5em;
   margin: 0.5em;
   width: calc(100% - 2em);
-
 `;
 
 interface PointCardProps {
   point: number;
   isHost: boolean;
   isCorrect?: boolean;
-
 }
 
-
 const PointCard: React.FC<PointCardProps> = ({ point, isHost, isCorrect }) => {
-
   return isHost ? (
-    <TeamB isCorrect={isCorrect} >
+    <TeamB isCorrect={isCorrect}>
       <PointText>{point}</PointText>
     </TeamB>
   ) : (
