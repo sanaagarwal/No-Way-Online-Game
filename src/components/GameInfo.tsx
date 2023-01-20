@@ -1,8 +1,7 @@
-import React, {useState} from "react";
+import React from "react";
 import Modal from "./Modal";
 import styled from "styled-components";
 import {GiPointyHat} from "react-icons/gi";
-import App from "../App";
 
 export const PlayerOfHonorIcon = styled(GiPointyHat)`
   color: #ffffff;
