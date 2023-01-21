@@ -210,7 +210,12 @@ function App() {
             Rules
           </GameButton>
           {infoDisplay ? (
-            <GameInfo onClose={() => setInfoDisplay(false)} />
+            <GameInfo onClose={(startGame) => {
+              if(startGame){
+                setState({ ...state, gameStage: "HOST_VOTING" });
+              }
+              setInfoDisplay(false)
+            }} />
           ) : null}
         </>
       )}
