@@ -14,7 +14,7 @@ interface GameInfoProps {
 
 const GameInfo: React.FC<GameInfoProps> = ({ onClose }) => {
     const [pageIDX, setPageIDX] = React.useState(0);
-    const pages =  [<ul style={{lineHeight: "8mm"}}>
+    const pages =  [<ul style={{lineHeight: "9mm", fontSize: 21}}>
         <li> When you start the game, you will see a list of prompts.</li>
         <li> The objective of the game is to guess the other player's preferences and interests on a scale of 1
             to 5.
@@ -39,11 +39,11 @@ const GameInfo: React.FC<GameInfoProps> = ({ onClose }) => {
         <li> The winner will be determined by whoever has the highest points. </li>
     </ul>,
         <>
-        <p> The points are calculated based on the following formula: </p>
-        <ul style={{lineHeight: "8mm"}}>
+        <p style={{lineHeight: "9mm", fontSize: 21}}> The points are calculated based on the following formula: </p>
+        <ul style={{lineHeight: "9mm", fontSize: 21}}>
             <li> If the answer matches, you get 1 point.</li>
             <li> If the answer doesnt match, you get no points.</li>
-            <li> If all the answers matches, you get +1 point. </li>
+            <li> If all the answers matches, you get an extra +1 point. </li>
         </ul>
     </>]
 
@@ -57,7 +57,7 @@ const GameInfo: React.FC<GameInfoProps> = ({ onClose }) => {
                     {/*}}> Start Playing </button>*/}
                     {pages[pageIDX]}
                     {pageIDX === 0 && <button onClick={() => setPageIDX(pageIDX + 1)}>Next</button>}
-                    {pageIDX === pages.length -1 && <button onClick={() => onClose(true)}>Close</button>}
+                    {pageIDX === pages.length -1 && <button onClick={() => onClose(true)}>Play Now</button>}
                 </Modal>
     );
 }
